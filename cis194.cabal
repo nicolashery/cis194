@@ -17,7 +17,9 @@ library
   default-language:    Haskell2010
   exposed-modules:
     Homework.A.CreditCard,
-    Homework.A.Hanoi
+    Homework.A.Hanoi,
+    Homework.B.Log,
+    Homework.B.LogAnalysis
   build-depends:       base >= 4.7 && < 5
 
 test-suite spec
