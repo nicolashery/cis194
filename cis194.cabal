@@ -16,7 +16,8 @@ library
   hs-source-dirs:      src
   default-language:    Haskell2010
   exposed-modules:
-    Homework.A.CreditCard
+    Homework.A.CreditCard,
+    Homework.A.Hanoi
   build-depends:       base >= 4.7 && < 5
 
 test-suite spec
