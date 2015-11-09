@@ -55,7 +55,8 @@ insert message (Node left nodeMessage right) =
 -- Exercise 3
 
 build :: [LogMessage] -> MessageTree
-build = foldr insert Leaf
+build [] = Leaf
+build (x:xs) = insert x (build xs)
 
 -- Exercise 4
 
