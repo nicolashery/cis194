@@ -51,3 +51,30 @@ insert message (Node left nodeMessage right) =
     if messageTime < nodeMessageTime
     then Node (insert message left) nodeMessage right
     else Node left nodeMessage (insert message right)
+
+-- Exercise 3
+
+build :: [LogMessage] -> MessageTree
+build = foldr insert Leaf
+
+-- Exercise 4
+
+inOrder :: MessageTree -> [LogMessage]
+inOrder Leaf = []
+inOrder (Node left message right) = (inOrder left) ++ [message] ++ (inOrder right)
+
+-- Exercise 5
+
+isRelevant :: LogMessage -> Bool
+isRelevant (LogMessage (Error level) _ _) = level >= 50
+isRelevant _ = False
+
+getMessageText :: LogMessage -> String
+getMessageText (LogMessage _ _ text) = text
+getMessageText _ = ""
+
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong messages =
+  let sortedMessages = inOrder (build messages)
+      relevantMessages = filter isRelevant sortedMessages
+  in map getMessageText relevantMessages

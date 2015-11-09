@@ -5,11 +5,53 @@ import Homework.B.Log
 import Homework.B.LogAnalysis
 import Test.Hspec
 
-tree :: MessageTree
-tree = Node
+smallMessages :: [LogMessage]
+smallMessages =
+  [ (LogMessage Info 1 "1")
+  , (LogMessage Info 5 "5")
+  , (LogMessage Info 3 "3")
+  , (Unknown "")
+  ]
+
+smallTree :: MessageTree
+smallTree = Node
   (Node Leaf (LogMessage Info 1 "1") Leaf)
   (LogMessage Info 3 "3")
   (Node Leaf (LogMessage Info 5 "5") Leaf)
+
+messages :: [LogMessage]
+messages =
+  [ (LogMessage Info 2 "2")
+  , (LogMessage Info 1 "1")
+  , (LogMessage Info 5 "5")
+  , (LogMessage Info 3 "3")
+  , (Unknown "")
+  ]
+
+tree :: MessageTree
+tree = Node
+  (Node Leaf (LogMessage Info 1 "1") (Node Leaf (LogMessage Info 2 "2") Leaf))
+  (LogMessage Info 3 "3")
+  (Node Leaf (LogMessage Info 5 "5") Leaf)
+
+sortedMessages :: [LogMessage]
+sortedMessages =
+  [ (LogMessage Info 1 "1")
+  , (LogMessage Info 2 "2")
+  , (LogMessage Info 3 "3")
+  , (LogMessage Info 5 "5")
+  ]
+
+postmortemMessages :: [LogMessage]
+postmortemMessages =
+  [ (LogMessage Info 1 "I1")
+  , (LogMessage (Error 40) 2 "E2")
+  , (LogMessage (Error 50) 4 "E4")
+  , (LogMessage (Error 51) 3 "E3")
+  ]
+
+postmortemResult :: [String]
+postmortemResult = ["E3", "E4"]
 
 spec :: Spec
 spec = describe "Homework.B.LogAnalysis" $ do
@@ -32,8 +74,16 @@ spec = describe "Homework.B.LogAnalysis" $ do
       insert (Unknown "") tree `shouldBe` tree
 
     it "inserts log message at the correct place in the tree" $ do
-      insert (LogMessage Info 2 "2") tree `shouldBe`
-        Node
-          (Node Leaf (LogMessage Info 1 "1") (Node Leaf (LogMessage Info 2 "2") Leaf))
-          (LogMessage Info 3 "3")
-          (Node Leaf (LogMessage Info 5 "5") Leaf)
+      insert (LogMessage Info 2 "2") smallTree `shouldBe` tree
+
+  describe "build" $ do
+    it "builds a complete tree from a list of messages" $ do
+      build messages `shouldBe` tree
+
+  describe "inOrder" $ do
+    it "produces a list of messages sorted by timestamp from smallest to biggest" $ do
+      inOrder tree `shouldBe` sortedMessages
+
+  describe "whatWentWrong" $ do
+    it " produces a list of the text from relevant messages sorted by timestamp" $ do
+      whatWentWrong postmortemMessages `shouldBe` postmortemResult
