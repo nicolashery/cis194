@@ -19,7 +19,8 @@ library
     Homework.A.CreditCard,
     Homework.A.Hanoi,
     Homework.B.Log,
-    Homework.B.LogAnalysis
+    Homework.B.LogAnalysis,
+    Homework.C.Golf
   build-depends:       base >= 4.7 && < 5
 
 test-suite spec
