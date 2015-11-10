@@ -22,3 +22,13 @@ spec = describe "Homework.C.Golf" $ do
 
     it "works on another string" $ do
       skips "hello!" `shouldBe` ["hello!", "el!", "l!", "l", "o", "!"]
+
+  describe "localMaxima" $ do
+    it "returns an empty list when there are no local maxima" $ do
+      localMaxima [1,2,3,4,5] `shouldBe` []
+
+    it "returns a list with the local maxima it found" $ do
+      localMaxima [2,3,4,1,5] `shouldBe` [4]
+
+    it "returns multiple local maxima if they exist" $ do
+      localMaxima [2,9,5,6,1] `shouldBe` [9,6]
